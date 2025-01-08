@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "553158411136",
+    "project_id": "android-cda3f",
+    "storage_bucket": "android-cda3f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553158411136:android:ba957d02b5971a32ceb765",
+        "android_client_info": {
+          "package_name": "com.example.androidfirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEJMZd71KctV6VOZIpZuQwsUbtDiewSHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
