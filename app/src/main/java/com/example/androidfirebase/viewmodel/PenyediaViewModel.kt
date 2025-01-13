@@ -10,6 +10,7 @@ import com.example.androidfirebase.MahasiswaApplication
 object PenyediaViewModel{
     val Factory = viewModelFactory {
         initializer { HomeViewModel(aplikasiKontak().container.mahasiswaRepository) }
+        initializer { InsertViewModel(aplikasiKontak().container.mahasiswaRepository) }
     }
 }
 fun CreationExtras.aplikasiKontak(): MahasiswaApplication =

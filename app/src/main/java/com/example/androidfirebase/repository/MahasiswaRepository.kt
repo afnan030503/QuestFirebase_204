@@ -6,13 +6,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 
 interface MahasiswaRepository {
-    suspend fun  getMahasiswa(): Flow<List<Mahasiswa>>
+    suspend fun  getMhs(): Flow<List<Mahasiswa>>
 
-    suspend fun insertMahasiswa(mahasiswa: Mahasiswa)
+    suspend fun insertMhs(mahasiswa: Mahasiswa)
 
-    suspend fun updateMahasiswa(nim: String,mahasiswa: Mahasiswa)
+    suspend fun updateMhs(nim: String,mahasiswa: Mahasiswa)
 
-    suspend fun deleteMahasiswa(nim: String, mahasiswa: Mahasiswa)
+    suspend fun deleteMhs( mahasiswa: Mahasiswa)
 
-    suspend fun getMahasiswabyNim(nim: String):Flow<Mahasiswa>
+    suspend fun getMhsbyNim(nim: String):Flow<Mahasiswa>
 }

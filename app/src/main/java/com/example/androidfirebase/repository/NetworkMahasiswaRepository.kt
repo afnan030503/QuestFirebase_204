@@ -11,7 +11,7 @@ import kotlinx.coroutines.tasks.await
 class NetworkMahasiswaRepository (
     private val firestore: FirebaseFirestore
 ): MahasiswaRepository{
-    override suspend fun getMahasiswa(): Flow<List<Mahasiswa>> = callbackFlow{
+    override suspend fun getMhs(): Flow<List<Mahasiswa>> = callbackFlow{
         val mhsCollection = firestore.collection("Mahasiswa")
             .orderBy("nim", Query.Direction.DESCENDING)
             .addSnapshotListener{//realtime sama callbackflow
@@ -28,7 +28,7 @@ class NetworkMahasiswaRepository (
         }
     }
 
-    override suspend fun insertMahasiswa(mahasiswa: Mahasiswa) {
+    override suspend fun insertMhs(mahasiswa: Mahasiswa) {
         try {
             firestore.collection("Mahasiswa").add(mahasiswa).await()
         }catch (e: Exception){
@@ -36,7 +36,7 @@ class NetworkMahasiswaRepository (
         }
     }
 
-    override suspend fun getMahasiswabyNim(nim: String): Flow<Mahasiswa> = callbackFlow{
+    override suspend fun getMhsbyNim(nim: String): Flow<Mahasiswa> = callbackFlow{
         val mhsDocument = firestore.collection("Mahasiswa")
             .document(nim)
             .addSnapshotListener{value, error ->
@@ -50,7 +50,7 @@ class NetworkMahasiswaRepository (
         }
     }
 
-    override suspend fun deleteMahasiswa(nim: String, mahasiswa: Mahasiswa) {
+    override suspend fun deleteMhs(mahasiswa: Mahasiswa) {
         try {
             firestore.collection("Mahasiswa")
                 .document(mahasiswa.nim)
@@ -61,7 +61,7 @@ class NetworkMahasiswaRepository (
         }
     }
 
-    override suspend fun updateMahasiswa(nim: String,mahasiswa: Mahasiswa) {
+    override suspend fun updateMhs(nim: String,mahasiswa: Mahasiswa) {
       try {
           firestore.collection("Mahasiswa")
               .document(mahasiswa.nim)

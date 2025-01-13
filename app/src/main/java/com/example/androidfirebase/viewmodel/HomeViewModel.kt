@@ -15,7 +15,7 @@ import kotlin.Exception
 
 sealed class HomeUiState {
     data class Success(val mahasiswa: List<Mahasiswa>) : HomeUiState()
-    data class Error(val exception: Throwable) : HomeUiState()
+    data class Error(val e: Throwable) : HomeUiState()
     object Loading : HomeUiState()
 
 }
@@ -32,7 +32,7 @@ class HomeViewModel (
 
     fun getMhs() {
         viewModelScope.launch {
-            mhs.getMahasiswa()
+            mhs.getMhs()
                 .onStart {
                     mhsUIState = HomeUiState.Loading
                 }
@@ -46,6 +46,15 @@ class HomeViewModel (
                         HomeUiState.Success(it)
                     }
                 }
+        }
+    }
+    fun deleteMhs(mahasiswa: Mahasiswa){
+        viewModelScope.launch {
+            try {
+                mhs.deleteMhs(mahasiswa)
+            } catch (e: Exception) {
+                mhsUIState = HomeUiState.Error(e)
+            }
         }
     }
 }

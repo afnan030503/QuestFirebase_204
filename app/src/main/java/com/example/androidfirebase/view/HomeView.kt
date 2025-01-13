@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,9 +28,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,7 +53,7 @@ import com.example.androidfirebase.viewmodel.PenyediaViewModel
 fun HomeView(
     navigateToItemEntry: () -> Unit,
     modifier: Modifier = Modifier,
-    onDetailClick: (String) -> Unit = {},
+    onDetailClick: (Mahasiswa) -> Unit = {},
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -71,8 +77,9 @@ fun HomeView(
         HomeStatus(
             homeUiState = viewModel.mhsUIState,
             retryAction = { viewModel.getMhs() }, modifier = Modifier.padding(innerPadding),
-            onDetailClick = onDetailClick, onDeleteClick = {
-                viewModel.getMhs()
+            onDetailClick = onDetailClick,
+            onDeleteClick = {
+                viewModel.deleteMhs(it)
             }
         )
     }
@@ -83,28 +90,43 @@ fun HomeStatus(
     homeUiState: HomeUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Mahasiswa) -> Unit,
-    onDetailClick: (String) -> Unit
+    onDetailClick: (Mahasiswa) -> Unit,
+    onDeleteClick: (Mahasiswa) -> Unit = {},
 ){
+    var deleteConfirmationRequired by rememberSaveable { mutableStateOf<Mahasiswa?>(null) }
     when (homeUiState) {
         is HomeUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
-
-        is HomeUiState.Success ->
-
-                MhsLayout(
-                    mahasiswa = homeUiState.mahasiswa, modifier = modifier.fillMaxWidth(),
-                    onDetailClick = {
-                        onDetailClick(it.nim)
+        is HomeUiState.Success -> {
+            MhsLayout(
+                mahasiswa = homeUiState.mahasiswa, modifier = modifier.fillMaxWidth(),
+                onDetailClick = {
+                    onDetailClick(it)
+                },
+                onDeleteClick = {
+                    onDeleteClick(it)
+                }
+            )
+            deleteConfirmationRequired?.let { mahasiswa ->
+                DeleteConfirmationDialog(
+                    onDeleteConfirm = {
+                        onDeleteClick(mahasiswa)
+                        deleteConfirmationRequired = null
                     },
-                    onDeleteClick = {
-                        onDeleteClick(it)
+                    onDeleteCancel = {
+                        deleteConfirmationRequired = null
                     }
                 )
+            }
+        }
 
-        is HomeUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize(),
-            message = homeUiState.exception.message ?: "Error")
+        is HomeUiState.Error -> OnError(
+            retryAction,
+            modifier = modifier.fillMaxSize(),
+            message = homeUiState.e.message ?: "Error"
+        )
     }
 }
+
 
 @Composable
 fun OnLoading(modifier: Modifier = Modifier) {
@@ -207,4 +229,25 @@ fun MhsCard(
             )
         }
     }
+}
+@Composable
+private fun DeleteConfirmationDialog (
+    onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier =
+        Modifier
+) {
+    AlertDialog(onDismissRequest = { /* Do nothing */ },
+        title = { Text("Delete Data") },
+        text = { Text("Apakah anda yakin ingin menghapus data?") },
+        modifier = modifier,
+        dismissButton = {
+            TextButton (onClick = onDeleteCancel) {
+                Text(text = "Cancel")
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDeleteConfirm) {
+                Text(text = "Yes")
+            }
+        }
+    )
 }
