@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AndroidFirebaseTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeView(navigateToItemEntry = {}, modifier = Modifier.padding(innerPadding))
+                    Penyedia(navigateToItemEntry = {}, modifier = Modifier.padding(innerPadding))
 
                 }
             }

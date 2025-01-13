@@ -1,5 +1,10 @@
 package com.example.androidfirebase.view
 
+import FormErrorState
+import FormState
+import InsertUiState
+import InsertViewModel
+import MahasiswaEvent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,11 +36,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.androidfirebase.viewmodel.FormErrorState
-import com.example.androidfirebase.viewmodel.FormState
-import com.example.androidfirebase.viewmodel.InsertUiState
-import com.example.androidfirebase.viewmodel.InsertViewModel
-import com.example.androidfirebase.viewmodel.MahasiswaEvent
 import com.example.androidfirebase.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
