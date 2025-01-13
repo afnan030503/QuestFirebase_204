@@ -41,7 +41,7 @@ class InsertViewModel(
             viewModelScope.launch {
                 uiState = FormState.Loading
                 try {
-                    mhs.insertMahasiswa(uiEvent.insertUiEvent.toMhsModel())
+                    mhs.insertMhs(uiEvent.insertUiEvent.toMhsModel())
                     uiState = FormState.Success("Data berhasil disimpan")
                 }catch (e:Exception){
                     uiState = FormState.Error("Data gagal disimpan")
@@ -97,3 +97,12 @@ data class MahasiswaEvent(
 )
 
 
+//Menyimpan input form ke dalam entity
+fun MahasiswaEvent.toMhsModel(): Mahasiswa = Mahasiswa(
+    nim = nim,
+    nama = nama,
+    jeniskelamin = jenis_kelamin,
+    alamat = alamat,
+    kelas = kelas,
+    angkatan = angkatan
+)
