@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -159,11 +161,13 @@ fun FormMahasiswa(
     errorState: FormErrorState = FormErrorState(),
     modifier: Modifier = Modifier
 ) {
-    val jenis_kelamin = listOf("Laki-laki", "Perempuan")
+    val jeniskelamin = listOf("Laki-laki", "Perempuan")
     val kelas = listOf("A", "B", "C", "D", "E")
 
     Column(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -201,15 +205,15 @@ fun FormMahasiswa(
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            jenis_kelamin.forEach { jk ->
+            jeniskelamin.forEach { jk ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
                     RadioButton(
-                        selected = mahasiswaEvent.jenis_kelamin == jk,
+                        selected = mahasiswaEvent.jeniskelamin == jk,
                         onClick = {
-                            onValueChange(mahasiswaEvent.copy(jenis_kelamin = jk))
+                            onValueChange(mahasiswaEvent.copy(jeniskelamin = jk))
                         },
                     )
                     Text(
@@ -219,7 +223,7 @@ fun FormMahasiswa(
             }
         }
         Text(
-            text = errorState.jenis_kelamin ?: "",
+            text = errorState.jeniskelamin ?: "",
             color = Color.Red
         )
 
@@ -275,6 +279,51 @@ fun FormMahasiswa(
     )
     Text(
         text = errorState.angkatan ?: "",
+        color = Color.Red
+    )
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = mahasiswaEvent.judulskrisi,
+        onValueChange = {
+            onValueChange(mahasiswaEvent.copy(judulskrisi = it))
+        },
+        label = { Text("Judul Skripsi") },
+        isError = errorState.judulskrisi != null,
+        placeholder = { Text("Masukkan Judul Skripsi") },
+    )
+    Text(
+        text = errorState.judulskrisi ?: "",
+        color = Color.Red
+    )
+
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = mahasiswaEvent.dospem1,
+        onValueChange = {
+            onValueChange(mahasiswaEvent.copy(dospem1 = it))
+        },
+        label = { Text("Dosen Pembimbing1") },
+        isError = errorState.dospem1 != null,
+        placeholder = { Text("Masukkan nama Dosen Pembimbing 1") },
+    )
+    Text(
+        text = errorState.dospem1 ?: "",
+        color = Color.Red
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = mahasiswaEvent.dospem2,
+        onValueChange = {
+            onValueChange(mahasiswaEvent.copy(dospem2 = it))
+        },
+        label = { Text("Dosen Pembimbing2") },
+        isError = errorState.dospem2 != null,
+        placeholder = { Text("Masukkan nama Dosen Pembimbing 2") },
+    )
+    Text(
+        text = errorState.dospem2 ?: "",
         color = Color.Red
     )
 }
